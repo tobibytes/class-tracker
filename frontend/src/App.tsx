@@ -6,7 +6,7 @@ import WeekTimeline from './components/WeekTimeline';
 import SettingsModal from './components/SettingsModal';
 import MissingMeetings from './components/MissingMeetings';
 import { getLocal, setLocal, removeLocal } from './hooks/useLocalStorage';
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 export default function App() {
   const [error, setError] = useState<string | null>(null);
   console.log(`backend: ${import.meta.env.VITE_API_BASE_URL}`);
