@@ -15,6 +15,15 @@
           window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js').catch(() => {});
           });
+          // One-time reload when a new SW activates
+          navigator.serviceWorker.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'sw-activated') {
+              if (!sessionStorage.getItem('sw_reloaded')) {
+                sessionStorage.setItem('sw_reloaded', '1');
+                window.location.reload();
+              }
+            }
+          });
         } else {
           // In dev, ensure no service worker controls the page (prevents stale caching)
           navigator.serviceWorker.getRegistrations().then((regs) => {
