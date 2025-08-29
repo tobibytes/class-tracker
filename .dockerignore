@@ -11,10 +11,4 @@ frontend/dist/
 backend/node_modules/
 backend/dist/
 
-# Backend runtime data
-backend/data/config.json
-
-# Env files in subprojects
-backend/.env
-frontend/.env
 

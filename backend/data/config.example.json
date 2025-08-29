@@ -4,161 +4,16 @@
     "manual": { "timezone": "America/New_York" }
   },
   "profile": {
-    "student_name": "Oluwatobi Olajide",
-    "school_name": "Morgan State University",
-    "semester": "Fall 2025",
+    "student_name": "Student",
+    "school_name": "",
+    "semester": "",
     "week_start": "monday"
   },
-  "courses": [
-    {
-      "course_id": "os",
-      "code": "OS",
-      "title": "Operating Systems",
-      "section": "",
-      "color": "#2563EB",
-      "instructors": [],
-      "location_default": {
-        "campus": "Main",
-        "building": "McMechen",
-        "room": "516",
-        "map_url": null
-      },
-      "meetings": [
-        { "weekday": "mon", "start": "11:00", "end": "11:50", "location_override": null },
-        { "weekday": "wed", "start": "11:00", "end": "11:50", "location_override": null },
-        { "weekday": "fri", "start": "11:00", "end": "11:50", "location_override": null }
-      ],
-      "online": { "is_online": false, "join_url": null },
-      "notes": ""
-    },
-    {
-      "course_id": "engl",
-      "code": "ENGL",
-      "title": "English",
-      "section": "",
-      "color": "#10B981",
-      "instructors": [],
-      "location_default": {
-        "campus": "Main",
-        "building": "Comms",
-        "room": "119",
-        "map_url": null
-      },
-      "meetings": [
-        { "weekday": "mon", "start": "12:00", "end": "12:50", "location_override": null },
-        { "weekday": "wed", "start": "12:00", "end": "12:50", "location_override": null },
-        { "weekday": "fri", "start": "12:00", "end": "12:50", "location_override": null }
-      ],
-      "online": { "is_online": false, "join_url": null },
-      "notes": ""
-    },
-    {
-      "course_id": "media",
-      "code": "MEDIA",
-      "title": "Media Literacy",
-      "section": "",
-      "color": "#F59E0B",
-      "instructors": [],
-      "location_default": {
-        "campus": "Main",
-        "building": "Comms",
-        "room": "206",
-        "map_url": null
-      },
-      "meetings": [
-        { "weekday": "mon", "start": "14:00", "end": "14:50", "location_override": null },
-        { "weekday": "wed", "start": "14:00", "end": "14:50", "location_override": null },
-        { "weekday": "fri", "start": "14:00", "end": "14:50", "location_override": null }
-      ],
-      "online": { "is_online": false, "join_url": null },
-      "notes": "Please confirm: end time 2:50pm?"
-    },
-    {
-      "course_id": "discrete",
-      "code": "DISCRETE",
-      "title": "Discrete",
-      "section": "",
-      "color": "#EF4444",
-      "instructors": [],
-      "location_default": {
-        "campus": "Main",
-        "building": "McMechen",
-        "room": "515",
-        "map_url": null
-      },
-      "meetings": [
-        { "weekday": "mon", "start": "15:00", "end": "15:50", "location_override": null },
-        { "weekday": "wed", "start": "15:00", "end": "15:50", "location_override": null },
-        { "weekday": "fri", "start": "15:00", "end": "15:50", "location_override": null }
-      ],
-      "online": { "is_online": false, "join_url": null },
-      "notes": ""
-    },
-    {
-      "course_id": "linalg",
-      "code": "LINALG",
-      "title": "Linear Algebra",
-      "section": "",
-      "color": "#8B5CF6",
-      "instructors": [],
-      "location_default": {
-        "campus": "Main",
-        "building": "Carnegie",
-        "room": "356",
-        "map_url": null
-      },
-      "meetings": [
-        { "weekday": "tue", "start": "09:30", "end": "10:45", "location_override": null },
-        { "weekday": "thu", "start": "09:30", "end": "10:45", "location_override": null }
-      ],
-      "online": { "is_online": false, "join_url": null },
-      "notes": "Please confirm days: Tue/Thu?"
-    },
-    {
-      "course_id": "networks",
-      "code": "NETWORKS",
-      "title": "Computer Network",
-      "section": "",
-      "color": "#06B6D4",
-      "instructors": [],
-      "location_default": {
-        "campus": "Main",
-        "building": "Calloway",
-        "room": "303",
-        "map_url": null
-      },
-      "meetings": [
-        { "weekday": "tue", "start": "13:00", "end": "14:20", "location_override": null },
-        { "weekday": "thu", "start": "13:00", "end": "14:20", "location_override": null }
-      ],
-      "online": { "is_online": false, "join_url": null },
-      "notes": "Please confirm days: Tue/Thu?"
-    },
-    {
-      "course_id": "mobile",
-      "code": "MOBILE",
-      "title": "Mobile Development",
-      "section": "",
-      "color": "#84CC16",
-      "instructors": [],
-      "location_default": {
-        "campus": "Main",
-        "building": "McMechen",
-        "room": "519",
-        "map_url": null
-      },
-      "meetings": [
-        { "weekday": "tue", "start": "15:00", "end": "16:20", "location_override": null },
-        { "weekday": "thu", "start": "15:00", "end": "16:20", "location_override": null }
-      ],
-      "online": { "is_online": false, "join_url": null },
-      "notes": "Please confirm days: Tue/Thu?"
-    }
-  ],
+  "courses": [],
   "notifications": {
     "enabled": true,
     "reminders": [
-      { "type": "before_class", "minutes": 20 }
+      { "type": "before_class", "minutes": 15 }
     ],
     "quiet_hours": { "enabled": false }
   },

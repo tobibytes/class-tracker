@@ -24,7 +24,7 @@ export default function WeekTimeline({ config }: { config: any }) {
             <div className="day-label">{d.toUpperCase()}</div>
             <div className="day-items">
               {byDay[d].map((m, idx) => (
-                <div className="pill-item" style={{ backgroundColor: m.course.color || '#ccc' }} key={idx} title={`${m.course.code} ${m.start}-${m.end}`}>
+                <div className="pill-item" style={{ backgroundColor: m.course.color || '#ccc' }} key={idx} title={`${m.course.code} • ${m.course.title} ${m.start}-${m.end}`}>
                   <span className="pill-text">{m.course.code}</span>
                 </div>
               ))}

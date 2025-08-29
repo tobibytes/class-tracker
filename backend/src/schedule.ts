@@ -2,10 +2,10 @@ import { DateTime } from 'luxon';
 import { Config, Course, Meeting, Weekdays, Location } from './types.js';
 
 function getTimezone(config: Config) {
-  if (config.data_source.mode === 'manual' && config.data_source.manual?.timezone) {
-    return config.data_source.manual.timezone;
+  if (config.data_source && (config.data_source as any).manual?.timezone) {
+    return (config.data_source as any).manual.timezone;
   }
-  return process.env.TZ || 'UTC';
+  return process.env.TZ || 'America/New_York';
 }
 
 export type MeetingInstance = {

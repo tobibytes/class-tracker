@@ -44,7 +44,7 @@ function defaultConfig(): Config {
   return {
     data_source: {
       mode: 'manual',
-      manual: { timezone: process.env.TZ || 'UTC' }
+      manual: { timezone: process.env.TZ || 'America/New_York' }
     },
     profile: {
       student_name: 'Student',

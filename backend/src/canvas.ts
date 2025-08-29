@@ -12,7 +12,10 @@ type CanvasCourse = {
 export async function fetchCanvasCourses(baseUrl: string, token: string): Promise<Course[]> {
   const url = new URL('/api/v1/courses', baseUrl);
   url.searchParams.set('enrollment_state', 'active');
+  url.searchParams.set('enrollment_type', 'student');
   url.searchParams.append('include[]', 'term');
+  url.searchParams.append('state[]', 'available');
+  url.searchParams.append('state[]', 'current');
 
   const res = await fetch(url.toString(), {
     headers: {

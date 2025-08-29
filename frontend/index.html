@@ -3,10 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#111827" />
     <title>Class Tracker</title>
   </head>
   <body>
     <div id="root"></div>
+    <script type="module">
+      if ('serviceWorker' in navigator) {
+        if (import.meta.env && import.meta.env.PROD) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+          });
+        } else {
+          // In dev, ensure no service worker controls the page (prevents stale caching)
+          navigator.serviceWorker.getRegistrations().then((regs) => {
+            regs.forEach((r) => r.unregister());
+          }).catch(() => {});
+          if (window.caches && typeof window.caches.keys === 'function') {
+            window.caches.keys().then((keys) => keys.forEach((k) => window.caches.delete(k))).catch(() => {});
+          }
+        }
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
