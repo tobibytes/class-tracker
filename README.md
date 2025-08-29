@@ -1,61 +1,39 @@
 Class Tracker
 
-Overview
-- A simple app that tells you your next class, time, and where it is.
-- Manual mode or Canvas mode (via REST API, access token from .env).
-- React + Vite frontend (dev) and Node + Express + TypeScript backend. Docker compose runs only the backend.
+Always know what’s next.
 
-Quick start
-1) Backend env
-- Copy backend/.env.example to backend/.env and fill values:
-  - PORT=4000
-  - TZ=America/New_York (or your timezone)
-  - Optional Canvas:
-    - CANVAS_BASE_URL=https://your-school.instructure.com
-    - CANVAS_ACCESS_TOKEN=your_canvas_token_here
+Class Tracker is a simple, private dashboard that tells you:
+- What your next class is (with a live countdown)
+- Where you need to be (room, building, and a quick map link)
+- Today’s schedule at a glance
+- Your week’s classes in a clean, color‑coded timeline
 
-2) Default schedule config (blank)
-- On first run, backend creates backend/data/config.json from backend/data/config.example.json with an empty courses list.
-- Connect Canvas to import your courses, or POST a manual config later via /api/config.
+Who it’s for
+- Students who use Canvas and want a faster, calmer way to see their day
+- Anyone tired of cryptic course names (e.g., COSC354.001) and bouncing between apps
 
-3) Run the app (local dev)
-- Backend:  cd backend && npm install && npm run dev  (http://localhost:4000)
-- Frontend: cd frontend && npm install && npm run dev (http://localhost:5173)
-- The frontend calls the backend directly via VITE_API_BASE_URL (default http://localhost:4000).
+What you can do
+- Connect your Canvas once and import your courses
+- Rename classes to human‑friendly names (e.g., “Operating Systems”)
+- Fill in missing times/rooms when Canvas doesn’t provide them
+- See everything update automatically every 30 seconds (or refresh anytime)
+- Install it like an app on desktop or phone for instant access
 
-4) Docker (backend only)
-- docker compose up -d --build
-- Backend:  http://localhost:4000
-- Use Vite dev (npm run dev in frontend) for the UI.
+Why you’ll love it
+- Zero‑friction: open it, instantly see what’s next
+- Private by default: your Canvas token stays in your browser; nothing is stored on the server
+- Clear and calm: no clutter—just the next class, today, and your week
+- Works offline for the UI shell, so it opens fast even on flaky Wi‑Fi
 
-5) Canvas sync (optional)
-- Put your Canvas base URL and access token in backend/.env.
-- POST to http://localhost:4000/api/sync/canvas to import courses. If Canvas doesn’t provide meeting times/rooms, add them manually later.
+How it works (quick, non‑technical)
+- Connect Canvas with your personal access token (stored only in your browser)
+- If times or rooms are missing, add them once—they’re remembered locally
+- The app keeps your view fresh with a 30‑second auto‑refresh
 
-API (backend)
-- GET /api/health          -> { ok }
-- GET /api/config          -> current config (matches the schema below)
-- POST /api/config         -> replace config (send full JSON)
-- GET /api/next            -> next upcoming meeting { next: {...} }
-- GET /api/today           -> today’s meetings
-- POST /api/sync/canvas    -> import courses from Canvas using env values
+That’s it. No accounts to create. No complicated setup. Just your schedule—simple and fast.
 
-Config schema (subset)
-- data_source.mode: "manual" | "canvas"
-- manual.timezone: IANA timezone (e.g., America/New_York)
-- courses[] with meetings[] weekday/start/end and location fields
-
-Minimal example config
-See backend/data/config.example.json (blank by default).
-
-Local development
-- Backend: cd backend && npm install && npm run dev
-- Frontend: cd frontend && npm install && npm run dev
-
-Notes
-- Frontend shows:
-  - Big “Next class in X min” card
-  - Today list with time, code, title, room and a map pin
-  - Week timeline with pill blocks per course
-- The default schedule is empty; connect Canvas from the UI Settings to import courses.
+For developers (very short)
+- Self‑hosted, privacy‑first. React + Vite frontend and a Node/Express API.
+- Canvas import is stateless; tokens are kept in the browser.
+- Tech details and commands live in WARP.md.
 
