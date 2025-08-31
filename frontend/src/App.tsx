@@ -21,15 +21,17 @@ export default function App() {
   // Courses and local meeting overrides
   const [courses, setCourses] = useState<any[]>(getLocal('courses_cache', [] as any[]));
   const [meetingOverrides, setMeetingOverrides] = useState<Record<string, any[]>>(getLocal('meeting_overrides', {}));
+  const [titleOverrides, setTitleOverrides] = useState<Record<string, string>>(getLocal('title_overrides', {}));
 
   const hasCanvas = !!baseUrl && !!token;
   const mergedCourses = useMemo(() => {
     if (!courses || courses.length === 0) return [];
     return courses.map((c: any) => ({
       ...c,
+      title: titleOverrides[c.course_id] ? titleOverrides[c.course_id] : c.title,
       meetings: (meetingOverrides[c.course_id] && meetingOverrides[c.course_id].length > 0) ? meetingOverrides[c.course_id] : (c.meetings || [])
     }));
-  }, [courses, meetingOverrides]);
+  }, [courses, meetingOverrides, titleOverrides]);
 
   // Ephemeral config built per user in browser
   const ephemeralConfig = useMemo(() => ({
@@ -47,7 +49,6 @@ export default function App() {
   useEffect(() => {
     setError(null);
     if (hasCanvas) {
-      // If we have creds but no courses cached, import from Canvas
       if (courses.length === 0) {
         canvasImport(baseUrl, token)
           .then(({ courses }) => {
@@ -55,18 +56,27 @@ export default function App() {
             setLocal('courses_cache', courses);
           })
           .catch((e) => setError(e.message));
+      } else {
+        const { next, today } = computeLocalSchedule(mergedCourses);
+        setNextInfo(next);
+        setTodayInfo(today);
       }
     } else {
-      // Fallback to server global config (single-user mode)
-      Promise.all([getNext(), getToday(), getConfig()]).then(([n, t, c]) => {
-        setNextInfo(n);
-        setTodayInfo(t);
-        // Also keep ephemeral config so WeekTimeline shows something
-        setCourses(c.courses || []);
-      }).catch((e) => setError(e.message));
+      if (courses.length > 0) {
+        const { next, today } = computeLocalSchedule(mergedCourses);
+        setNextInfo(next);
+        setTodayInfo(today);
+      } else {
+        Promise.all([getNext(), getToday(), getConfig()]).then(([n, t, c]) => {
+          setNextInfo(n);
+          setTodayInfo(t);
+          setCourses(c.courses || []);
+          setLocal('courses_cache', c.courses || []);
+        }).catch((e) => setError(e.message));
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasCanvas]);
+  }, [hasCanvas, courses, mergedCourses]);
 
   // Recompute next/today when ephemeralConfig changes in Canvas mode
   useEffect(() => {
@@ -77,6 +87,76 @@ export default function App() {
     }
   }, [hasCanvas, ephemeralConfig]);
 
+  // Local schedule computation (device timezone)
+  function computeLocalSchedule(localCourses: any[]) {
+    const now = new Date();
+    const dayIdx = now.getDay(); // 0..6 (Sun..Sat)
+    const map: Record<string, number> = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
+
+    type MI = { course: any; start: Date; end: Date; location: any };
+    const list: MI[] = [];
+    for (const c of localCourses || []) {
+      for (const m of c.meetings || []) {
+        const target = map[m.weekday];
+        if (typeof target !== 'number') continue;
+        for (let add = 0; add < 7; add++) {
+          const d = new Date(now);
+          const diff = (target - dayIdx + 7 + add) % 7;
+          d.setDate(now.getDate() + diff);
+          const [sh, sm] = String(m.start || '00:00').split(':').map((x: string) => parseInt(x, 10));
+          const [eh, em] = String(m.end || '00:00').split(':').map((x: string) => parseInt(x, 10));
+          const s = new Date(d); s.setHours(sh || 0, sm || 0, 0, 0);
+          const e = new Date(d); e.setHours(eh || 0, em || 0, 0, 0);
+          const loc = m.location_override ?? c.location_default ?? null;
+          if (e <= now && add === 0) continue;
+          list.push({ course: c, start: s, end: e, location: loc });
+          break;
+        }
+      }
+    }
+    list.sort((a, b) => a.start.getTime() - b.start.getTime());
+
+    const nextMI = list.find(mi => mi.end > now) || null;
+    let next: any = null;
+    if (nextMI) {
+      const minutes_until = Math.max(0, Math.round((nextMI.start.getTime() - now.getTime()) / 60000));
+      const status: 'upcoming' | 'in_progress' = (now >= nextMI.start && now < nextMI.end) ? 'in_progress' : 'upcoming';
+      next = {
+        now: now.toISOString(),
+        next: {
+          course_id: nextMI.course.course_id,
+          course_code: nextMI.course.code,
+          course_title: nextMI.course.title,
+          color: nextMI.course.color,
+          start: nextMI.start.toISOString(),
+          end: nextMI.end.toISOString(),
+          location: nextMI.location,
+          instructors: nextMI.course.instructors,
+          minutes_until,
+          status
+        }
+      };
+    }
+
+    const startOfDay = new Date(now); startOfDay.setHours(0,0,0,0);
+    const endOfDay = new Date(now); endOfDay.setHours(23,59,59,999);
+    const todayItems = list
+      .filter(mi => mi.start >= startOfDay && mi.start <= endOfDay)
+      .map(mi => ({
+        course_id: mi.course.course_id,
+        course_code: mi.course.code,
+        course_title: mi.course.title,
+        color: mi.course.color,
+        start: mi.start.toISOString(),
+        end: mi.end.toISOString(),
+        location: mi.location,
+        instructors: mi.course.instructors
+      }))
+      .sort((a, b) => (a.start < b.start ? -1 : 1));
+
+    return { next, today: { now: now.toISOString(), items: todayItems } };
+  }
+
   const onSettingsSaved = ({ base_url, access_token, timezone: tz }: any) => {
     setBaseUrl(base_url);
     setToken(access_token);
@@ -86,6 +166,10 @@ export default function App() {
 
   const onOverridesSaved = (overrides: Record<string, any[]>) => {
     setMeetingOverrides(overrides);
+  };
+
+  const onTitlesSaved = (titles: Record<string, string>) => {
+    setTitleOverrides(titles);
   };
 
   const disconnect = () => {
@@ -123,7 +207,7 @@ export default function App() {
       <WeekTimeline config={{ courses: mergedCourses }} />
 
       {hasCanvas && mergedCourses.some((c: any) => (c.meetings || []).length === 0) && (
-        <MissingMeetings courses={mergedCourses} onSaved={onOverridesSaved} />
+        <MissingMeetings courses={mergedCourses} onSaved={onOverridesSaved} titleOverrides={titleOverrides} onTitlesSaved={onTitlesSaved} />
       )}
 
       <footer>
@@ -134,6 +218,9 @@ export default function App() {
         open={showSettings}
         onClose={() => setShowSettings(false)}
         onSaved={onSettingsSaved}
+        courses={mergedCourses}
+        titleOverrides={titleOverrides}
+        onTitlesSaved={onTitlesSaved}
       />
     </div>
   );

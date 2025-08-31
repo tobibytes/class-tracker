@@ -22,8 +22,8 @@ export default function TodayList({ items }: { items: Item[] }) {
             <li key={idx} className="today-item">
               <span className="pill" style={{ backgroundColor: it.color || '#999' }} />
               <span className="time">{time}</span>
-              <span className="code">{it.course_code}</span>
               <span className="title">{it.course_title}</span>
+              <span className="code" style={{ opacity: 0.8 }}>{it.course_code}</span>
               <span className="room">{room}</span>
               {it.location?.map_url && (
                 <a className="map-pin" href={it.location.map_url} target="_blank" rel="noreferrer" title="Open map">📍</a>

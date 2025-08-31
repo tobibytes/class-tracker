@@ -1,10 +1,10 @@
 import express from 'express';
-import morgan from 'morgan';
 import cors from 'cors';
 import { ensureConfig, readConfig, writeConfig } from './config.js';
 import { ConfigSchema } from './types.js';
 import { getNextMeeting, getTodayMeetings } from './schedule.js';
 import { fetchCanvasCourses } from './canvas.js';
+import { logger, httpLogger } from './logger.js';
 
 const app = express();
 const PORT = Number(process.env.PORT || 4000);
@@ -13,10 +13,17 @@ ensureConfig();
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
-app.use(morgan('dev'));
+app.use(httpLogger);
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, uptime: process.uptime() });
+});
+
+process.on('unhandledRejection', (reason) => {
+  logger.error({ err: reason }, 'Unhandled promise rejection');
+});
+process.on('uncaughtException', (err) => {
+  logger.fatal({ err }, 'Uncaught exception');
 });
 
 // Global config endpoints (for self-hosted single-user mode)
@@ -25,6 +32,7 @@ app.get('/api/config', (_req, res) => {
     const cfg = readConfig();
     res.json(cfg);
   } catch (e: any) {
+    logger.error({ err: e }, 'GET /api/config failed');
     res.status(500).json({ error: e.message });
   }
 });
@@ -35,6 +43,7 @@ app.post('/api/config', (req, res) => {
     writeConfig(parsed);
     res.json({ ok: true });
   } catch (e: any) {
+    logger.warn({ err: e }, 'POST /api/config validation error');
     res.status(400).json({ error: e.message });
   }
 });
@@ -46,6 +55,7 @@ app.get('/api/next', (req, res) => {
     const result = getNextMeeting(cfg, now);
     res.json(result);
   } catch (e: any) {
+    logger.error({ err: e }, 'GET /api/next failed');
     res.status(500).json({ error: e.message });
   }
 });
@@ -57,6 +67,7 @@ app.get('/api/today', (req, res) => {
     const result = getTodayMeetings(cfg, now);
     res.json(result);
   } catch (e: any) {
+    logger.error({ err: e }, 'GET /api/today failed');
     res.status(500).json({ error: e.message });
   }
 });
@@ -78,8 +89,10 @@ app.post('/api/canvas/import', async (req, res) => {
       return res.status(400).json({ error: 'base_url and access_token are required' });
     }
     const courses = await fetchCanvasCourses(base, token);
+    logger.info({ imported: courses.length }, 'Canvas import success');
     res.json({ courses });
   } catch (e: any) {
+    logger.error({ err: e }, 'POST /api/canvas/import failed');
     res.status(500).json({ error: e.message });
   }
 });
@@ -92,6 +105,7 @@ app.post('/api/compute/next', (req, res) => {
     const result = getNextMeeting(parsed, typeof now === 'string' ? now : undefined);
     res.json(result);
   } catch (e: any) {
+    logger.warn({ err: e }, 'POST /api/compute/next validation error');
     res.status(400).json({ error: e.message });
   }
 });
@@ -103,6 +117,7 @@ app.post('/api/compute/today', (req, res) => {
     const result = getTodayMeetings(parsed, typeof now === 'string' ? now : undefined);
     res.json(result);
   } catch (e: any) {
+    logger.warn({ err: e }, 'POST /api/compute/today validation error');
     res.status(400).json({ error: e.message });
   }
 });
@@ -131,11 +146,12 @@ app.post('/api/sync/canvas', async (_req, res) => {
     writeConfig(newCfg as any);
     res.json({ ok: true, imported: courses.length });
   } catch (e: any) {
+    logger.error({ err: e }, 'POST /api/sync/canvas failed');
     res.status(500).json({ error: e.message });
   }
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Backend listening on http://0.0.0.0:${PORT}`);
+  logger.info({ port: PORT }, 'Backend listening');
 });
 

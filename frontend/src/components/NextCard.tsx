@@ -29,8 +29,8 @@ export default function NextCard({ next }: Props) {
       <div className="badge" style={{ backgroundColor: next.color || '#4F46E5' }}>
         {next.status === 'in_progress' ? 'In progress' : `Starts in ${next.minutes_until} min`}
       </div>
-      <h2>{next.course_code} • {next.course_title}</h2>
-      <p className="time">{time}</p>
+      <h2>{next.course_title}</h2>
+      <p className="time">{time} • <span style={{ opacity: 0.8 }}>{next.course_code}</span></p>
       <p className="location">{location}</p>
       {next.location?.map_url && (
         <a className="map-link" href={next.location.map_url} target="_blank" rel="noreferrer">Open map</a>
