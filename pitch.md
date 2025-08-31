@@ -2,7 +2,9 @@
 
 Always know what’s next.
 
-Built for Morgan State University students. Works on all devices—phone, tablet, and desktop—so your day is always one tap away.
+Built for Morgan State University students by a Morgan State Computer Science major. Works on all devices—phone, tablet, and desktop—so your day is always one tap away.
+
+Visit: https://classtracker.xyz
 
 What if your day at school felt calm and predictable? Class Tracker gives you a simple, beautiful view of your next class, today’s schedule, and the week ahead—without digging through Canvas or hunting for room numbers.
 
