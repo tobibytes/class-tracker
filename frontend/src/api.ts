@@ -1,9 +1,7 @@
 const DEFAULT_API = 'http://localhost:4000';
 export const API_BASE: string = (import.meta.env.VITE_API_BASE_URL as string) || DEFAULT_API;
-console.log(`API_BASE: ${API_BASE}`);
 export async function getNext() {
   const res = await fetch(`${API_BASE}/api/next`);
-  console.log(res)
   return res.json();
 }
 

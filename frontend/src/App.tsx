@@ -6,10 +6,9 @@ import WeekTimeline from './components/WeekTimeline';
 import SettingsModal from './components/SettingsModal';
 import MissingMeetings from './components/MissingMeetings';
 import { getLocal, setLocal, removeLocal } from './hooks/useLocalStorage';
-// import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react"
 export default function App() {
   const [error, setError] = useState<string | null>(null);
-  console.log(`backend: ${import.meta.env.VITE_API_BASE_URL}`);
 
   // UI state
   const [showSettings, setShowSettings] = useState(false);
@@ -193,10 +192,9 @@ export default function App() {
     setCourses([]);
     setMeetingOverrides({});
   };
-console.log("rendering: ", nextInfo)
   return (
     <div className="container">
-      {/* <Analytics /> */}
+      <Analytics />
       <header>
         <h1>Class Tracker</h1>
         <div style={{ marginLeft: 'auto' }}>
@@ -211,7 +209,7 @@ console.log("rendering: ", nextInfo)
         </div>
       </header>
 
-      {error && <div className="error">Error: {error}</div>}
+      {error && <div className="error">You are Offline {error}</div>}
 
       {nextInfo?.next && <NextCard next={nextInfo.next} />}
       {todayInfo?.items && <TodayList items={todayInfo.items} />}
