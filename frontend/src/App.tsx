@@ -6,7 +6,7 @@ import WeekTimeline from './components/WeekTimeline';
 import SettingsModal from './components/SettingsModal';
 import MissingMeetings from './components/MissingMeetings';
 import { getLocal, setLocal, removeLocal } from './hooks/useLocalStorage';
-import { Analytics } from "@vercel/analytics/react"
+// import { Analytics } from "@vercel/analytics/react"
 export default function App() {
   const [error, setError] = useState<string | null>(null);
   console.log(`backend: ${import.meta.env.VITE_API_BASE_URL}`);
@@ -80,12 +80,23 @@ export default function App() {
 
   // Recompute next/today when ephemeralConfig changes in Canvas mode
   useEffect(() => {
-    if (hasCanvas) {
-      Promise.all([computeNext(ephemeralConfig), computeToday(ephemeralConfig)])
-        .then(([n, t]) => { setNextInfo(n); setTodayInfo(t); })
-        .catch((e) => setError(e.message));
+    if (!hasCanvas) return;
+
+    // Show local schedule immediately if we have cached courses
+    if (mergedCourses.length > 0) {
+      const { next, today } = computeLocalSchedule(mergedCourses);
+      setNextInfo(next);
+      setTodayInfo(today);
     }
-  }, [hasCanvas, ephemeralConfig]);
+
+    // Then try server compute; only overwrite if server returns a value
+    Promise.all([computeNext(ephemeralConfig), computeToday(ephemeralConfig)])
+      .then(([n, t]) => {
+        if (n && (n as any).next) setNextInfo(n);
+        if (t && Array.isArray((t as any).items)) setTodayInfo(t);
+      })
+      .catch((e) => setError(e.message));
+  }, [hasCanvas, ephemeralConfig, mergedCourses]);
 
   // Local schedule computation (device timezone)
   function computeLocalSchedule(localCourses: any[]) {
@@ -182,10 +193,10 @@ export default function App() {
     setCourses([]);
     setMeetingOverrides({});
   };
-
+console.log("rendering: ", nextInfo)
   return (
     <div className="container">
-      <Analytics />
+      {/* <Analytics /> */}
       <header>
         <h1>Class Tracker</h1>
         <div style={{ marginLeft: 'auto' }}>
