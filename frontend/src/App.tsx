@@ -209,7 +209,7 @@ export default function App() {
         </div>
       </header>
 
-      {error && <div className="error">You are Offline {error}</div>}
+      {error && <div className="error">You are Offline </div>}
 
       {nextInfo?.next && <NextCard next={nextInfo.next} />}
       {todayInfo?.items && <TodayList items={todayInfo.items} />}
