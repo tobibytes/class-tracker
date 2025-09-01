@@ -1,4 +1,4 @@
-# Pitch: Class Tracker — Morgan State
+# Class Tracker — Morgan State
 
 Always know what’s next.
 

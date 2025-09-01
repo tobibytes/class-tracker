@@ -1,0 +1,11 @@
+Class Tracker — Morgan State (built by a Morgan CS major)
+Always know what’s next: your next class with countdown + room, today at a glance, and a clean weekly view.
+Rename COSC354.001 to “Operating Systems”, add missing times/rooms once, and you’re done.
+Private by default (your Canvas token stays in your browser). Works offline and on all devices.
+
+Try it: https://classtracker.xyz
+Install:
+- iPhone/iPad (Safari): Share → Add to Home Screen → Add
+- Android (Chrome): ⋮ → Add to Home screen (or Install App)
+- Mac/Windows/Linux (Chrome/Edge): menu → Install Class Tracker (or the address‑bar Install icon)
+

@@ -1,0 +1,48 @@
+CLASS TRACKER — MORGAN STATE
+
+Always know what’s next.
+Built for Morgan State University students by a Morgan State Computer Science major.
+Visit: https://classtracker.xyz
+
+THE PROBLEM
+- Canvas is great for coursework, but not for your day‑to‑day flow
+- Cryptic course codes (like COSC354.001) don’t help you get to class on time
+- Last‑minute room checks are stressful—especially when you’re on the move
+
+THE FIX (IN ONE GLANCE)
+- Next up: live countdown, time window, and room
+- Today: clean list with a quick map pin
+- Week: a clear, color‑coded timeline
+
+WHY STUDENTS LOVE IT
+- Calm, not clutter: just what you need right now
+- Human names for classes: rename to “Operating Systems” and forget codes
+- Offline‑friendly: opens fast even on flaky Wi‑Fi
+- Works the way you do: add missing times/rooms once, auto‑refreshes every 30s
+
+WHY IT’S DIFFERENT
+- Private by default: your Canvas token stays in your browser; nothing stored on the server
+- Fast: zero friction to see what’s next
+- Adaptable: rename courses, fill missing details, keep your own rhythm
+
+HOW IT WORKS (QUICK)
+1) Connect Canvas with your personal access token (kept in your browser)
+2) Import courses automatically; rename classes to human‑friendly names
+3) If Canvas doesn’t include times/rooms, add them once—done
+
+BUILT FOR REAL LIFE
+- Auto‑refresh every 30 seconds (manual Refresh too)
+- Offline mode: shows Next/Today from cached schedule when offline
+- Installable on all devices
+  * iPhone/iPad (Safari): Share → Add to Home Screen → Add
+  * Android (Chrome): ⋮ → Add to Home screen (or Install App) → Add
+  * Mac: Safari → Share → Add to Dock; Chrome → Install Class Tracker
+  * Windows/Linux (Chrome/Edge): menu → Install Class Tracker
+
+WHO IT’S FOR
+- Morgan State students who want a calmer, faster way to move through their day
+
+CALL TO ACTION
+Try it for one day of classes—connect Canvas, rename your courses, and feel the difference.
+Your day, at a glance. That’s Class Tracker.
+
