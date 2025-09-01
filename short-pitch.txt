@@ -8,4 +8,3 @@ Install:
 - iPhone/iPad (Safari): Share → Add to Home Screen → Add
 - Android (Chrome): ⋮ → Add to Home screen (or Install App)
 - Mac/Windows/Linux (Chrome/Edge): menu → Install Class Tracker (or the address‑bar Install icon)
-

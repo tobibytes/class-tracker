@@ -2,7 +2,7 @@ CLASS TRACKER — MORGAN STATE
 
 Always know what’s next.
 Built for Morgan State University students by a Morgan State Computer Science major.
-Visit: https://classtracker.xyz
+Visit: https://www.classtracker.xyz
 
 THE PROBLEM
 - Canvas is great for coursework, but not for your day‑to‑day flow
